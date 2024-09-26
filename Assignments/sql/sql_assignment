@@ -1,0 +1,54 @@
+
+-- Create the Database table
+CREATE TABLE candidates (
+  id INT PRIMARY KEY,
+  technology VARCHAR(255)
+);
+
+-- Insert data into the table
+INSERT INTO candidates (id, technology) VALUES
+  (1, 'DS'),
+  (1, 'Tableau'),
+  (1, 'Python'),
+  (1, 'CQL'),
+  (2, 'SQL'),
+  (2, 'R'),
+  (2, 'Power BI'),
+  (3, 'Python');
+
+-- Query to find candidates with all required skills
+SELECT id
+FROM candidates
+WHERE technology IN ('DS', 'Tableau', 'Python', 'CQL')
+GROUP BY id
+HAVING COUNT(DISTINCT technology) = 4;
+
+
+-- Create tables for product info and likes
+CREATE TABLE product_info (
+  pr_id INT PRIMARY KEY,
+  product_name VARCHAR(255)
+);
+
+CREATE TABLE likes (
+  user_id INT,
+  pr_id INT,
+  liked_date DATE,
+  FOREIGN KEY (pr_id) REFERENCES product_info(pr_id)
+);
+
+-- Insert data into the tables
+INSERT INTO product_info (pr_id, product_name) VALUES
+  (1001, 'Blog'),
+  (1002, 'Youtube'),
+  (1003, 'Edueston');
+
+INSERT INTO likes (user_id, pr_id, liked_date) VALUES
+  (1, 1001, '2023-08-19'),
+  (2, 1003, '2023-01-18');
+
+-- Query to find products with 0 likes
+SELECT pr_id
+FROM product_info
+LEFT JOIN likes ON product_info.pr_id = likes.pr_id
+WHERE likes.pr_id IS NULL;
